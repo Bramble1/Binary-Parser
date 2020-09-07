@@ -247,9 +247,6 @@ void program_header(Elf64_Phdr *phdr,int no_segs)
 {
 
 	/*Segment (program header) type*/
-	//printf("%d\n",(*phdr)[1]->p_type);
-	//printf("%d\n",(*phdr+seg_size)->p_type);
-	//printf("%d\n",(*phdr+(seg_size*5))->p_type);
 
 	printf("Type=\n");
 	printf("Flag reference: Write = %d\t Read = %d\t Executable = %d\n",PF_W,PF_R,PF_X);
@@ -260,37 +257,16 @@ void program_header(Elf64_Phdr *phdr,int no_segs)
 		{
 			case PT_LOAD:
 				printf("LOAD______\n");
-				/*printf("file offset of segment:%d bytes\n",phdr[i].p_offset);
-				printf("virtual address offset of segment in memory:%d bytes\n",phdr[i].p_vaddr);
-				printf("Physical address:%d bytes\n",phdr[i].p_paddr);
-				printf("Segment size on hdd:%d bytes\n",phdr[i].p_filesz);
-				printf("segment size in memory:%d bytes\n",phdr[i].p_memsz);
-				printf("Segment flags:%d\n",phdr[i].p_flags);
-				printf("segment allignment in memory:%d bytes\n",phdr[i].p_align);*/
 				print_segment_info(phdr[i]);
 				printf("___________\n");
 				break;
 			case PT_DYNAMIC:
 				printf("DYNAMIC_____\n");
-				/*printf("file offset of segment:%d bytes\n",phdr[i].p_offset);
-				printf("Virtual address offset of segment in memory:%d bytes\n",phdr[i].p_vaddr);
-				printf("Physical address:%d\n",phdr[i].p_paddr);
-				printf("Segment size on hdd:%d bytes\n",phdr[i].p_filesz);
-				printf("Segment size in memory:%d bytes\n",phdr[i].p_memsz);
-				printf("Segment flags:%d\n",phdr[i].p_flags);
-				printf("Segment allignment in memory:%d bytes\n",phdr[i].p_align);*/
 				print_segment_info(phdr[i]);
 				printf("____________\n");
 				break;
 			case PT_INTERP:
 				printf("INTERP______\n");
-				/*printf("File offset of segment:%d bytes\n",phdr[i].p_offset);
-				printf("Virtual address offset of segment in memory:%d bytes\n",phdr[i].p_vaddr);
-				printf("Physical address:%d bytes\n",phdr[i].p_paddr);
-				printf("Segment size on hdd:%d bytes\n",phdr[i].p_filesz);
-				printf("Segment size in memory:%d bytes\n",phdr[i].p_memsz);
-				printf("Segment flags:%d\n",phdr[i].p_flags);
-				printf("Segment allignment in memory:%d bytes\n",phdr[i].p_align);*/
 				print_segment_info(phdr[i]);
 				printf("____________\n");
 				break;
@@ -439,13 +415,20 @@ int main(int argc,char **argv)
 	shdr = (Elf64_Shdr *)&mem[ehdr->e_shoff];
 
 
-	/*check the first bytes for what file is it etc.*/
-//	printf("%s\n",ehdr->e_ident[EI_MAG1]);
-//	elf_header(&ehdr);
-//	program_header(phdr,ehdr->e_phnum);
+	/*show segments or sections(which are sections within each segment depending on supplied user*/
+	if(strcmp(argv[2],"header")==0)
+	{
+		elf_header(&ehdr);
+	}
+	else if(strcmp(argv[2],"segments")==0)
+	{
+		program_header(phdr,ehdr->e_phnum);
+	}
+	else if(strcmp(argv[2],"sections")==0)
+	{
+		StringTable = &mem[shdr[ehdr->e_shstrndx].sh_offset];
+		section_header(shdr,ehdr->e_shnum,StringTable);
+	}
 
-	
-	//need to set Stringtable so we can find out the names of the sections
-	StringTable = &mem[shdr[ehdr->e_shstrndx].sh_offset];
-	section_header(shdr,ehdr->e_shnum,StringTable);
+
 }
