@@ -7,12 +7,15 @@ Linux Binary Parser
       ./compile
      
  View ELf Header
-       ./parser <binary> header
+      
+      ./parser <binary> header
      
  View Elf Segments(Program header table)
+  
       ./parser <binary> segments
       
  View Elf sections (Section header table)
+  
       ./parser <binary> sections
 
 # To do
