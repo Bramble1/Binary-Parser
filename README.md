@@ -1,4 +1,4 @@
-# Binary-Parser (first quick prototype version)
+# Binary-Parser (prototype version)
 Linux Binary Parser
 
 
