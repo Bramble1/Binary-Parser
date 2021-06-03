@@ -1,7 +1,7 @@
 # Binary-Parser (v.1)
 Linux Binary Parser
 
-
+# Update, the code is spaghetti code and will be cleaned up when i have time...
 
 # Instructions
       ./compile
